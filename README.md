@@ -5,5 +5,6 @@
 ### Usage 
  
 chmod a+x hostinfo.sh 
+
 ./hostinfo.sh
  
