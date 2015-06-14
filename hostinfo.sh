@@ -20,23 +20,24 @@ country=`cat /tmp/raw.txt | grep $ip |tail -n 1 |sed 's/<br>/ /g'|cut -d"'" -f 2
 
 hostname=`cat /tmp/raw.txt | grep $ip |tail -n 1 |sed 's/<br>/ /g'|cut -d"'" -f 2 |awk {' print $1 '}`
 
-region=`cat /tmp/raw.txt | head --line=223 | tail -n 1`
+region=`cat /tmp/raw.txt |grep -2 "Region</td>" |sed 's/>/ /'|sed 's/</ /g'|tail -n 1|sed 's/span//g'|sed 's/class="dim"//g'|sed 's/\/>//g'`
 region=`echo $region`
 
 metropolis=`cat /tmp/raw.txt | grep nowrap |tail -n 1 |cut -d"<" -f 2 | sed 's/>/ /g'|awk {' print $4" "$5" "$6" "$7 '}`
 
 city=`cat /tmp/raw.txt | grep $ip |tail -n 1 |sed 's/<br>/ /g'|cut -d"'" -f 2 |awk {' print $3" "$4" "$5" "$6" "$7" "$8 '}|sed 's/, /|/g' |cut -d'|' -f 1`
 
-isp=`cat /tmp/raw.txt | head --line=177|tail -n 1`
+isp=`cat /tmp/raw.txt |grep -2 ISP | tail -n 1`
 isp=`echo $isp`
 
-postal=`cat /tmp/raw.txt |head --line=250|tail -n 1`
+postal=`cat /tmp/raw.txt |grep -2 Postal | tail -n 1`
 postal=`echo $postal`
 
-latitude=`cat /tmp/raw.txt |head --line=266|tail -n 1`
+latitude=`cat /tmp/raw.txt | grep -2 Latitude| tail -n 1
+`
 latitude=`echo $latitude`
 
-longitude=`cat /tmp/raw.txt | head --line=282|tail -n 1`
+longitude=`cat /tmp/raw.txt |grep -2 Longitude| tail -n 1`
 longitude=`echo $longitude`
 
 ccode=`cat /tmp/raw.txt | grep "&nbsp;" |head --line=48|tail -n 1|sed 's/&nbsp;/ /g'`
@@ -54,5 +55,5 @@ echo
 echo -e "Hostname : $hostname |IP Address : $ip \n\nISP : $isp |Country Code : $ccode \n\nContinent : $continent |Country : $country \n\nRegion : $region |City : $city \n\nMetropolies : $metropolis |Postal Code : $postal \n\nLatitude : $latitude |Longitude : $longitude" | column -t -s "|"
 echo
 
-rm -f /tmp/raw.txt
+#rm -f /tmp/raw.txt
 
